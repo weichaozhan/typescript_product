@@ -5,9 +5,9 @@ function sayHello(person: string) {
 let user = 'Tom';
 console.log(sayHello(user));
 
-let u:undefined = undefined;
-let boolean:number = 1;
-let union:string|number = 'sadas';
+let u;
+let boolean = 1;
+let union: string|number = 'sadas';
 
 union = 1;
 
@@ -18,7 +18,7 @@ interface Person {
   age: number;
 }
 
-let tom:Person = {
+let tom: Person = {
   name: 'wcz',
   age: 12,
 };
