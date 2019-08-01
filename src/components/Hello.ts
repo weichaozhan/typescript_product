@@ -237,4 +237,106 @@ const cat = new Cat('Cat');
 console.log(animal.name, '：', animal.sayHi());
 console.log(cat.name, '：', cat.doSomething(), cat.usePrivateMethod());
 
+/**
+ * @description 类实现接口
+ */
+interface IAlarm {
+  alert(): any;
+}
+interface ILight extends IAlarm {
+  lightOn(): any;
+  lightOff(): any;
+}
+
+class Door {
+
+}
+class AlarmDoor extends Door implements IAlarm {
+  public alert() {
+    console.log('AlarmDoor');
+  }
+}
+class Car implements ILight {
+  public alert() {
+    console.log('Car');
+  }
+
+  public lightOn() {
+    console.log('light on');
+  }
+
+  public lightOff() {
+    console.log('light off');
+  }
+}
+
+class Points {
+  public x: number = 1;
+  public y: number = 1;
+}
+interface IPoints3d extends Points {
+  z: number;
+}
+
+const point: IPoints3d = {
+  x: 10,
+  y: 20,
+  z: 10,
+};
+
+console.log(point);
+
+interface Counter {
+  interval: number;
+  reset(): void;
+  (start: number): string;
+}
+
+let getCounter = ((start: number) => {
+  return '123';
+}) as Counter;
+getCounter.interval = 123;
+getCounter.reset = function () { };
+
+let counter: Counter = getCounter;
+
+console.log(counter);
+
+/**
+ * @description 泛型
+ */
+interface ILengthWise {
+  length: number;
+}
+function createArray<T, U extends ILengthWise>(length: number, value: T, t?: U): Array<T> {
+  const result = [];
+
+  for (let i = 0; i < length; i++) {
+    result[i] = value;
+  }
+  return result;
+}
+
+let genericsArray = createArray(3, 6, []);
+
+genericsArray.push(1);
+
+console.log(genericsArray);
+
+interface IGenericsInterface<T, U> {
+  name: T;
+  count: U;
+  age: T|U;
+  func: <L = string>(start: L) => L;
+}
+
+let iGenericsInterface: IGenericsInterface<string, number> = {
+  name: '1',
+  count: 1,
+  age: '1',
+  func: (start: any) => start,
+};
+
+console.log('iGenericsInterface', iGenericsInterface);
+
 export default 1;
