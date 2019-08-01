@@ -1,15 +1,14 @@
 {
   "extends": ["eslint-config-alloy/react", "eslint-config-alloy/typescript"],
+  "globals": {
+    // 全局变量
+    // 这里值为 false 表示这个全局变量不允许被重新赋值，比如：
+    "__DEV__": false
+  },
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "react/jsx-indent": ["error", 2, { "SwitchCase": 1 }],
-    "@typescript-eslint/indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1,
-        "flatTernaryExpressions": true
-      }
-    ]
+    "@typescript-eslint/indent": ["error", 2, { "SwitchCase": 1, "flatTernaryExpressions": true }],
+    "@typescript-eslint/prefer-function-type": "off"
   }
 }
