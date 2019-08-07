@@ -22,12 +22,11 @@
   &:not(:last-child) > .nodes-parent {
     border-left: 1px solid #1890ff;
   }
-  &:last-child  > .nodes-parent {
+  &:last-child  > .nodes-parent > .nodes {
     
     & > .line-last-node {
       position: absolute;
-      left: 0;
-      top: 0;
+      top: -20px;
       border-right: 1px solid #1890ff;
     }
   }

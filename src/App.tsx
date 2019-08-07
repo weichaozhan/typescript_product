@@ -25,11 +25,6 @@ const App: React.FC = () => {
             key: '0-0',
             node: buildDiv(300, 2),
             childrenShow: true,
-          },
-          {
-            key: '0-1',
-            node: buildDiv(180, 9),
-            childrenShow: true,
             children: [
               {
                 key: '0-0-0',
@@ -68,6 +63,11 @@ const App: React.FC = () => {
                 node: buildDiv(200, 8, 'content111'),
               },
             ],
+          },
+          {
+            key: '0-1',
+            node: buildDiv(180, 9),
+            childrenShow: true,
           },
         ],
       },

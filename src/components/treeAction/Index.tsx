@@ -3,8 +3,8 @@ import React from 'react';
 import styles from './index.module.scss';
 
 interface IProps {
-  vLinePosition?: number; // 竖线位置
-  hLinePosition?: number; // 横线位置
+  vLinePosition?: number|string; // 竖线位置
+  hLinePosition?: number; // 子节点距离竖线的位置
   lineWidth?: number; // 连线长度
   nodeList: Array< TreeAction.INode>;
   [propName: string]: any;
@@ -41,6 +41,15 @@ class TreeAction extends React.Component<IProps> {
    */
   private buildNodeList(nodeList: Array<any>, isOutter: boolean = false) {
     const { vLinePosition, hLinePosition, lineWidth, } = this.props;
+    const vLinePositionType = typeof vLinePosition;
+    let vLinePositionTrans: string;
+
+    if (vLinePositionType === 'number') {
+      vLinePositionTrans = `${vLinePosition}px`;
+    } else if (vLinePositionType === 'string') {
+      vLinePositionTrans = vLinePosition as string;
+    }
+
 
     return nodeList.map(node => {
       let children;
@@ -54,7 +63,7 @@ class TreeAction extends React.Component<IProps> {
       }
 
       return <div className={isOutter ? '' : styles['nodes-wrapper']} key={node.key} style={{
-        paddingLeft: isOutter ? '0' : `${vLinePosition}px`,
+        paddingLeft: isOutter ? '0' : vLinePositionTrans,
       }}>
         <div className={styles['nodes-parent']} style={{
           paddingLeft: isOutter ? '0' : `${hLinePosition}px`,
@@ -63,15 +72,16 @@ class TreeAction extends React.Component<IProps> {
           borderLeftWidth: `${lineWidth as number}px`,
         }}>
           {/* 同级最后一个节点连线 */}
-          {
-            !isOutter &&
-            <i className={styles['line-last-node']} style={{
-              height: 'calc(50% + 10px)',
-              borderRightWidth: `${lineWidth as number}px`,
-            }} ></i>
-          }
           
           <div className={`${styles['nodes']} ${typeof node.node === 'string' ? styles['string-node'] : ''}`} >
+            {
+              !isOutter &&
+              <i className={styles['line-last-node']} style={{
+                height: 'calc(50% + 20px)',
+                left: `-${hLinePosition as number}px`,
+                borderRightWidth: `${lineWidth as number}px`,
+              }} ></i>
+            }
             {/* 横线 */}
             {
               !isOutter &&
