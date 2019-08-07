@@ -1,69 +1,55 @@
 import React from 'react';
-import PropTypes, { node } from 'prop-types';
 
 import styles from './index.module.scss';
 
 interface IProps {
-  nodeWidth: number;
+  vLinePosition?: number; // 竖线位置
+  hLinePosition?: number; // 横线位置
+  lineWidth?: number; // 连线长度
   nodeList: Array< TreeAction.INode>;
   [propName: string]: any;
 }
 
 class TreeAction extends React.Component<IProps> {
   public static defaultProps = {
+    vLinePosition: 50,
+    hLinePosition: 30,
+    lineWidth: 1,
   };
-  // public static propTypes = {
-  //   nodeWidth: PropTypes.number.isRequired,
-  // };
 
   public state: TreeAction.ITreeActionState;
-  private refCanvas: any;
 
   public constructor(props: IProps) {
     super(props);
     this.state = {};
-
-    this.refCanvas = React.createRef();
-  }
-
-  public componentDidMount() {
-    this.resetCanvas();
-  }
-
-  public componentDidUpdate() {
-    this.resetCanvas();
-  }
-
-  public resetCanvas() {
-    const cavasParent = this.refCanvas.current.parentNode;
-    const canvas = this.refCanvas.current;
-
-    canvas.width = cavasParent.offsetWidth;
-    canvas.height = cavasParent.offsetHeight;
   }
 
   public render() {
     const { nodeList, } = this.props;
     
     return <div className={styles['tree-wrapper']} >
-      
-      <canvas ref={this.refCanvas} ></canvas>
-      
       <div>
         {this.buildNodeList(nodeList, true)}
       </div>
     </div>;
   }
 
+  /**
+   * @description 构建树结构
+   * @param {Array<TreeAction.INode>} nodeList 树结构数组
+   * @param {Boolean} isOutter 是否为祖先节点
+   */
   private buildNodeList(nodeList: Array<any>, isOutter: boolean = false) {
-    const { nodeWidth, } = this.props;
+    const { vLinePosition, hLinePosition, lineWidth, } = this.props;
 
     return nodeList.map(node => {
       let children;
-      const vLinePosition = nodeWidth / 2; // 竖线位置
-      const hLinePosition = nodeWidth / 4; // 横线位置
 
-      if (node.children && node.children.length > 0) {
+      if (
+        node.children &&
+        node.children.length > 0 &&
+        !!node.childrenShow
+      ) {
         children = this.buildNodeList(node.children);
       }
 
@@ -73,10 +59,29 @@ class TreeAction extends React.Component<IProps> {
         <div className={styles['nodes-parent']} style={{
           paddingLeft: isOutter ? '0' : `${hLinePosition}px`,
           overflow: 'hidden',
+          // 竖线
+          borderLeftWidth: `${lineWidth as number}px`,
         }}>
-          {!isOutter && <i className={styles['line-last-node']}></i>}
-          <div className={`${styles['nodes']} ${typeof node.node === 'string' ? styles['string-node'] : ''}`} style={{ width: `${nodeWidth}px`, }}>
-            {!isOutter && <i className={styles['line']} style={{ width: `${hLinePosition}px`, left: `-${hLinePosition + 1}px`, }}></i>}
+          {/* 同级最后一个节点连线 */}
+          {
+            !isOutter &&
+            <i className={styles['line-last-node']} style={{
+              height: 'calc(50% + 10px)',
+              borderRightWidth: `${lineWidth as number}px`,
+            }} ></i>
+          }
+          
+          <div className={`${styles['nodes']} ${typeof node.node === 'string' ? styles['string-node'] : ''}`} >
+            {/* 横线 */}
+            {
+              !isOutter &&
+              <i className={styles['line']} style={{
+                width: `${hLinePosition as number + 2}px`,
+                left: `-${hLinePosition as number + 2}px`,
+                borderTopWidth: `${lineWidth as number}px`,
+              }}></i>
+            }
+            
             {node.node}
           </div>
 

@@ -5,6 +5,7 @@ declare namespace TreeAction {
   interface INode {
     key: number|string;
     node: string|React.ReactDOM|JSX.Element;
+    childrenShow?: boolean;
     children?: Array<INode>;
   }
 

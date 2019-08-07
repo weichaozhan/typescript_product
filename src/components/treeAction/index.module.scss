@@ -20,16 +20,15 @@
     position: relative;
   }
   &:not(:last-child) > .nodes-parent {
-    border-left: 2px solid #1890ff;
+    border-left: 1px solid #1890ff;
   }
   &:last-child  > .nodes-parent {
     
     & > .line-last-node {
-      height: calc(50% + 10px);
       position: absolute;
       left: 0;
       top: 0;
-      border-right: 2px solid #1890ff;
+      border-right: 1px solid #1890ff;
     }
   }
 }
@@ -47,6 +46,6 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    border-top: 2px solid #1890ff;
+    border-top: 1px solid #1890ff;
   }
 }
