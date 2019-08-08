@@ -3,17 +3,11 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  
-  & > canvas {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: -1;
-  }
 }
 
+.outter-most-nodes-wrapper:not(:first-child) {
+  margin-top: 20px;
+}
 .nodes-wrapper {
   
   & > .nodes-parent {
@@ -32,9 +26,12 @@
   }
 }
 .nodes {
-  margin-top: 20px;
   position: relative;
+  &:not([class=outter-most-node]) {
+    margin-top: 20px;
+  }
   &.string-node {
+    width: 150px;
     padding: 20px 10px;
     border: 1px solid #1890ff;
     border-radius: 6px;

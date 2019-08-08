@@ -4,7 +4,7 @@ import './App.css';
 import TreeAction from './components/treeAction/Index';
 
 function buildDiv(width: number, index: number, content?: string): JSX.Element {
-  return <div style={{ width: `${width}px`, border: '1px solid #1890ff', padding: '20px' }}>
+  return <div style={{ width: `${width}px`, border: '1px solid #1890ff', padding: '20px', boxSizing: 'border-box' }}>
     node {index}
     <div>
       {content}
@@ -18,12 +18,12 @@ const App: React.FC = () => {
     <TreeAction hLinePosition={50} vLinePosition={100} lineWidth={1} nodeList={[
       {
         key: '0',
-        node: buildDiv(100, 1),
+        node: buildDiv(200, 1),
         childrenShow: true,
         children: [
           {
             key: '0-0',
-            node: buildDiv(300, 2),
+            node: buildDiv(200, 2),
             childrenShow: true,
             children: [
               {
@@ -32,29 +32,29 @@ const App: React.FC = () => {
                 children: [
                   {
                     key: '0-0-0-0',
-                    node: buildDiv(300, 10, '0-0-0-0'),
+                    node: buildDiv(200, 10, '0-0-0-0'),
                   },
                   {
                     key: '0-0-0-1',
-                    node: buildDiv(150, 11),
+                    node: buildDiv(200, 11),
                   },
                 ],
               },
               {
                 key: '0-0-1',
-                node: buildDiv(100, 4, 'content'),
+                node: buildDiv(200, 4, 'content'),
               },
               {
                 key: '0-0-2',
-                node: buildDiv(100, 5, 'content111'),
+                node: buildDiv(200, 5, 'content111'),
                 children: [
                   {
                     key: '0-0-2-0',
-                    node: buildDiv(100, 6, 'content222'),
+                    node: buildDiv(200, 6, 'content222'),
                   },
                   {
                     key: '0-0-2-1',
-                    node: buildDiv(150, 7),
+                    node: buildDiv(200, 7),
                   },
                 ],
               },
@@ -66,25 +66,25 @@ const App: React.FC = () => {
           },
           {
             key: '0-1',
-            node: buildDiv(180, 9),
+            node: buildDiv(200, 9),
             childrenShow: true,
           },
         ],
       },
-      // {
-      //   key: '1',
-      //   node: '<div>node 2</div>',
-      //   children: [
-      //     {
-      //       key: '1-0',
-      //       node: '<div>node 5</div>',
-      //     },
-      //     {
-      //       key: '1-1',
-      //       node: '<div>node 6</div>',
-      //     },
-      //   ],
-      // },
+      {
+        key: '1',
+        node: '<div>node 2</div>',
+        children: [
+          {
+            key: '1-0',
+            node: '<div>node 5</div>',
+          },
+          {
+            key: '1-1',
+            node: '<div>node 6</div>',
+          },
+        ],
+      },
     ]}
     />
   </div>);

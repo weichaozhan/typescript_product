@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './index.module.scss';
 
 interface IProps {
-  vLinePosition?: number|string; // 竖线位置
+  vLinePosition?: number; // 竖线位置
   hLinePosition?: number; // 子节点距离竖线的位置
   lineWidth?: number; // 连线长度
   nodeList: Array< TreeAction.INode>;
@@ -41,16 +41,8 @@ class TreeAction extends React.Component<IProps> {
    */
   private buildNodeList(nodeList: Array<any>, isOutter: boolean = false) {
     const { vLinePosition, hLinePosition, lineWidth, } = this.props;
-    const vLinePositionType = typeof vLinePosition;
-    let vLinePositionTrans: string;
-
-    if (vLinePositionType === 'number') {
-      vLinePositionTrans = `${vLinePosition}px`;
-    } else if (vLinePositionType === 'string') {
-      vLinePositionTrans = vLinePosition as string;
-    }
-
-
+    let vLinePositionTrans = `${vLinePosition}px`;
+    
     return nodeList.map(node => {
       let children;
 
@@ -62,7 +54,7 @@ class TreeAction extends React.Component<IProps> {
         children = this.buildNodeList(node.children);
       }
 
-      return <div className={isOutter ? '' : styles['nodes-wrapper']} key={node.key} style={{
+      return <div className={isOutter ? styles['outter-most-nodes-wrapper'] : styles['nodes-wrapper']} key={node.key} style={{
         paddingLeft: isOutter ? '0' : vLinePositionTrans,
       }}>
         <div className={styles['nodes-parent']} style={{
@@ -71,9 +63,9 @@ class TreeAction extends React.Component<IProps> {
           // 竖线
           borderLeftWidth: `${lineWidth as number}px`,
         }}>
-          {/* 同级最后一个节点连线 */}
           
-          <div className={`${styles['nodes']} ${typeof node.node === 'string' ? styles['string-node'] : ''}`} >
+          <div className={`${styles['nodes']} ${isOutter && styles['outter-most-node']} ${typeof node.node === 'string' ? styles['string-node'] : ''}`} >
+            {/* 同级最后一个节点连线 */}
             {
               !isOutter &&
               <i className={styles['line-last-node']} style={{
