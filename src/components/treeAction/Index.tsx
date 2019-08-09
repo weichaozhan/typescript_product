@@ -60,8 +60,7 @@ class TreeAction extends React.Component<IProps, TreeAction.ITreeActionState> {
 
       if (
         node.children &&
-        node.children.length > 0 &&
-        !!node.childrenShow
+        node.children.length > 0
       ) {
         children = this.buildNodeList(node.children);
       }
@@ -100,8 +99,8 @@ class TreeAction extends React.Component<IProps, TreeAction.ITreeActionState> {
             {/* 展开收起按钮 */}
             {
               !node.isLeaf &&
-              <Icon className={`${styles['tree-toggle-btn']}`} type={node.childrenShow ? 'minus-circle' : 'plus-circle'} onClick={() => {
-                this.clickToggleBtn(node);
+              <Icon className={`${styles['tree-toggle-btn']}`} type={node.childrenShow ? 'minus-circle' : 'plus-circle'} onClick={(e) => {
+                this.clickToggleBtn(e, node);
               }} >
               </Icon>
             }
@@ -115,8 +114,12 @@ class TreeAction extends React.Component<IProps, TreeAction.ITreeActionState> {
                 node.node
             }
           </div>
-
-          {children}
+          
+          <div className={styles['children-nodes-parent']} style={{ height: (node.height || node.height === 0) ? node.height + 'px' : 'auto', }} >
+            <div>
+              {children}
+            </div>
+          </div>
         </div>
       </div>;
     });
@@ -126,12 +129,40 @@ class TreeAction extends React.Component<IProps, TreeAction.ITreeActionState> {
    * @description 节点展开收起子节点
    * @param {TreeAction.INode} node 操作的节点
    */
-  private clickToggleBtn(node: TreeAction.INode) {
-    node.childrenShow = !node.childrenShow;
+  private clickToggleBtn(e: React.MouseEvent, node: TreeAction.INode) {
+    const nodeIn = (e.currentTarget).parentElement;
+    const nodeInParent = (nodeIn as HTMLElement).parentElement;
+    const childrenNodesParent = (nodeInParent as HTMLElement).querySelector(`.${styles['children-nodes-parent']} > div`);
+    const childrenHeight = (childrenNodesParent as HTMLElement).offsetHeight;
+    const setNewNodeList = () => {
+      node.childrenShow = !node.childrenShow;
+      node.height = node.childrenShow ? childrenHeight : 0;
+  
+      this.setState({
+        nodeList: this.state.nodeList,
+      }, () => {
+        setTimeout(() => {
+          if (node.height > 0) {
+            node.height = undefined;
+            // this.setState({ nodeList: this.state.nodeList, });
+          }
+        });
+      });
+    };
     
-    this.setState({
-      nodeList: this.state.nodeList,
-    });
+    if (node.height === undefined) {
+      node.height = childrenHeight;
+
+      this.setState({
+        nodeList: this.state.nodeList,
+      }, () => {
+        setTimeout(() => {
+          setNewNodeList();
+        });
+      });
+    } else {
+      setNewNodeList();
+    }
   }
 }
 
