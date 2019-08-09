@@ -141,12 +141,9 @@ class TreeAction extends React.Component<IProps, TreeAction.ITreeActionState> {
       this.setState({
         nodeList: this.state.nodeList,
       }, () => {
-        setTimeout(() => {
-          if (node.height > 0) {
-            node.height = undefined;
-            // this.setState({ nodeList: this.state.nodeList, });
-          }
-        });
+        if (node.height > 0) {
+          node.height = undefined;
+        }
       });
     };
     
